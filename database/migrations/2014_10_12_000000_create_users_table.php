@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('tagline')->nullable();
             $table->text('about')->nullable();
-            $table->string('location')->nullable();
+            $table->point('location')->nullable();
             $table->string('formatted_address')->nullable();
             $table->boolean('available_to_hire')->nullable();
             $table->rememberToken();
