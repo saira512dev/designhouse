@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 //Routes for authenticated users only
 
-Route::group(['middleware' => ['auth:api']],function(){
+Route::group(['middleware' => ['auth:sanctum']],function(){
 
 });
 
