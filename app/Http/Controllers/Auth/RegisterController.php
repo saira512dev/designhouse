@@ -4,50 +4,42 @@ namespace App\Http\Controllers\Auth;
 
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use Validator;
 use Illuminate\Http\Request;
-use Illuminate\Supports\Facades\Hash;
-use Illuminate\Supports\Facades\Validator;
-
-
+use Illuminate\Support\Facades\Hash;
+use App\Actions\Fortify\PasswordValidationRules;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller
-{
+{ 
+    use PasswordValidationRules;
 
-
-    // public function __construct()
-    // {
-    //     //$this->middleware('guest');
-    // }
-    
-     protected function register(Request $request, User $user)
+    public function create(Request $request)
     {
-        return response()->json($request,'200');
+        $input = $request->all();
+        
+        Validator::make($input, [
+            'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => $this->passwordRules(),
+        ])->validate();
+
+        $result = User::create([
+            'name' => $input['name'],
+            'username' => $input['username'],
+            'email' => $input['email'],
+            'password' => Hash::make($input['password']),
+        ]);
+
+        event(new Registered($result));
+
+
+        // $result->sendEmailVerificationNotification();
+
+        return response()->json($result,'200');
     }
    
-    // protected function registered(Request $request, User $user)
-    // {
-    //     return response()->json($user,'200');
-    // }
-   
-    // protected function validator(array $data)
-    // {
-    //     return validator::make($data, [
-    //         'username' => ['required', 'string', 'max:15', 'alpha_dash','unique:users,username'],
-    //         'name' => ['required', 'string', 'max:255'],
-    //         'email' => ['required','string','email','max:255','unique:users'],
-    //         'password' => ['required', 'string', 'min:8','confirmed'],
-    //     ]);
-    // }
-
-    // protected function create(array $data)
-    // {
-    //     return User::create([
-    //         'name' => $data['name'],
-    //         'username' => $data['username'],
-    //         'email' => $data['email'],
-    //         'password' => Hash::make($data['password']),
-    //     ]);
-    // }   
-
+    
     
 }
