@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use App\Notifications\ResetPassword;
 
 class User extends Authenticatable implements JWTSubject,MustVerifyEmail
 {
@@ -76,6 +77,11 @@ class User extends Authenticatable implements JWTSubject,MustVerifyEmail
     public function sendEmailVerificationNotification()
     {
         $this->notify(new VerifyEmail);
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPassword($token));
     }
 
     public function getJWTIdentifier()
