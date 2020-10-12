@@ -69,6 +69,12 @@ class LoginController extends Controller
             'expires_in' => $expiration
         ]);       
     }
+
+    public function logout()
+    {
+        auth($this->guard)->logout();
+        return response()->json(['message' => 'logged out successfully!']);
+    }
     
 
    
