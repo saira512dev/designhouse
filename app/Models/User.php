@@ -12,6 +12,8 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use App\Notifications\ResetPassword;
+use Grimzy\LaravelMysqlSpatial\Eloquent\SpatialTrait;
+
 
 class User extends Authenticatable implements JWTSubject,MustVerifyEmail
 {
@@ -20,6 +22,8 @@ class User extends Authenticatable implements JWTSubject,MustVerifyEmail
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use SpatialTrait;
+
 
     /**
      * The attributes that are mass assignable.
