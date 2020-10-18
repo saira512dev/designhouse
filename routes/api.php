@@ -6,12 +6,24 @@ use Illuminate\Support\Facades\Route;
 //Public routes
 Route::get('me', 'User\MeController@getMe');
 
+//Get designs
+Route::get('design','Designs\DesignController@index');
+
+//get users
+Route::get('users', 'User\UserController@index');
+
+
 //Routes for authenticated users only
 
 Route::group(['middleware' => ['auth:api']],function(){
     Route::post('logout','Auth\LoginController@logout');
     Route::put('settings/profile', 'User\SettingsController@updateProfile');
     Route::put('settings/password', 'User\SettingsController@updatePassword');
+
+    //Upload Designs
+    Route::post('designs','Designs\UploadController@upload');
+    Route::put('designs/{id}','Designs\DesignController@update');
+    Route::delete('designs/{id}','Designs\DesignController@destroy');
 });
 
 //Routes for guests only
