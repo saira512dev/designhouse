@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Actions\Fortify\PasswordValidationRules;
 use Illuminate\Auth\Events\Registered;
+use App\Http\Controllers\Auth\Controller;
+
 
 class RegisterController extends Controller
 { 

@@ -11,6 +11,8 @@ use Illuminate\Auth\SessionGuard;
 use JWTAuth;
 use Tymon\JWTAuth\Token;
 use Validator;
+use App\Http\Controllers\Auth\Controller;
+
 
 
 class LoginController extends Controller
