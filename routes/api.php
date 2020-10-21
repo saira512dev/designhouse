@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('me', 'User\MeController@getMe');
 
 //Get designs
-Route::get('design','Designs\DesignController@index');
+Route::get('designs','Designs\DesignController@index');
+Route::get('designs/{id}','Designs\DesignController@findDesign');
+
 
 //get users
 Route::get('users', 'User\UserController@index');
@@ -24,6 +26,15 @@ Route::group(['middleware' => ['auth:api']],function(){
     Route::post('designs','Designs\UploadController@upload');
     Route::put('designs/{id}','Designs\DesignController@update');
     Route::delete('designs/{id}','Designs\DesignController@destroy');
+
+    //likes and unlikes
+    Route::post('designs/{id}/like','Designs\DesignController@like');
+    Route::get('designs/{id}/liked','Designs\DesignController@checkIfUserHasLiked');
+
+    //comments
+    Route::post('designs/{id}/comments','Designs\CommentController@store');
+    Route::put('comments/{id}','Designs\CommentController@update');
+    Route::delete('comments/{id}','Designs\CommentController@destroy');
 });
 
 //Routes for guests only
