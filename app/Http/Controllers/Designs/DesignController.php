@@ -9,21 +9,45 @@ use App\Models\Design;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Http\Resources\DesignResource;
 use Illuminate\Support\Facades\Storage;
+use App\Repositories\Interfaces\IDesign;
+use App\Repositories\Eloquent\Criteria\{LatestFirst,IsLive,ForUser,EagerLoad};
+use App\Repositories\Criteria\ICriteria;
+use App\Repositories\Criteria\ICriterion;
 
 
 class DesignController extends Controller
 {
     use AuthorizesRequests;
+    
+    protected $designs;
 
+    public function __construct(IDesign $designs)
+    {
+        $this->designs = $designs;
+    }
+    
+    
     public function index()
     {
-        $designs = Design::all();
+        $designs = $this->designs->withCriteria([
+            new LatestFirst(),
+            new IsLive(),
+            new ForUser(1),
+            new EagerLoad(['user','comments'])
+        ])->all();
+
         return DesignResource::collection($designs);
+    }
+
+    public function findDesign($id)
+    {
+        $design = $this->designs->find($id);
+        return new DesignResource($design);
     }
 
     public function update(Request $request,$id)
     {
-        $design = Design::findOrFail($id);
+        $design = $this->designs->find($id);
         //return $user = $design->user();
 
         $this->authorize('update', $design,$design);
@@ -33,9 +57,9 @@ class DesignController extends Controller
             'description' => ['required','string','min:20', 'max:140'],
             'tags' => ['required']
         ]);
+            
 
-
-        $design->update([
+        $design = $this->designs->update($id,[
             'title' => $request->title,
             'description' => $request->description,
             'slug' => Str::slug($request->title),
@@ -43,14 +67,14 @@ class DesignController extends Controller
         ]);
 
         //Apply tags
-       $design->retag($request->tags);
+       $this->designs->applyTags($id,$request->tags);
 
         return new DesignResource($design);
     }
 
     public function destroy($id)
     {
-        $design = Design::findOrFail($id);
+        $design = $this->designs->find($id);
         $this->authorize('delete', $design);
 
         //delete the files associated with the record
@@ -61,10 +85,23 @@ class DesignController extends Controller
             }
         }
 
-        $design->delete();
+        $this->designs->delete($id);
 
         return response()->json(["message" => "Record deleted"], 200);
 
+    }
+
+    public function like($id)
+    {
+        $this->designs->like($id);
+        
+        return response()->json(["message" => "successfull"], 200);
+    }
+
+    public function checkIfUserHasLiked($designId)
+    {
+        $isLiked =  $this->designs->isLikedByUser($designId);
+        return response()->json(["liked" => $isLiked],200);
     }
     
 }
