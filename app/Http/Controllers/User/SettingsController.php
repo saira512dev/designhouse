@@ -9,10 +9,18 @@ use App\Rules\CheckSamePassword;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
+use App\Repositories\Interfaces\IUser;
 use Validator;
 
 class SettingsController extends Controller
 {
+    
+    
+    public function __construct(IUser $users)
+    {
+        $this->users = $users;
+    }
+    
     public function updateProfile(Request $request)
     {
         $user = auth()->user();
@@ -28,7 +36,7 @@ class SettingsController extends Controller
 
         $location =  new Point($request->location['latitude'], $request->location['longitude']);
             
-        $user->update([
+        $user = $this->users->update(auth()->id,[
             'tagline' => $request->tagline,
             'name' => $request->name,
             'about' => $request->about,
@@ -49,7 +57,7 @@ class SettingsController extends Controller
             'password' => ['required','confirmed','min:6',new CheckSamePassword],
         ]);
 
-        $request->user()->update([
+        $user = $this->users->update(auth()->user()->id,[
             'password' => bcrypt($request->password)
         ]);
 

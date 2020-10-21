@@ -10,7 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\URL;
-
+use App\Repositories\Interfaces\IUser;
 
 
 
@@ -21,7 +21,12 @@ class VerificationController extends Controller
      *
      * 
      */
-    public function verify(Request $request,User $user)
+    public function __construct(IUser $users)
+    {
+        $this->users = $users;
+    }
+    
+     public function verify(Request $request,User $user)
     {
         //check if url is a valid signed url
         if(!URL::hasValidSignature($request)){
@@ -48,7 +53,7 @@ class VerificationController extends Controller
             'email' => ['email', 'required']
         ]);
         
-        $user = User::where('email', $request->email)->first();
+        $user = $this->users->findWhereFirst('email', $request->email);
         if(!$user){
             return response()->json(["errors" => [
                 "email" => "No user could be found with this email address"

@@ -10,11 +10,17 @@ use Illuminate\Support\Facades\Hash;
 use App\Actions\Fortify\PasswordValidationRules;
 use Illuminate\Auth\Events\Registered;
 use App\Http\Controllers\Auth\Controller;
+use App\Repositories\Interfaces\IUser;
 
 
 class RegisterController extends Controller
 { 
     use PasswordValidationRules;
+
+    public function __construct(IUser $users)
+    {
+        $this->users = $users;
+    }
 
     public function create(Request $request)
     {
@@ -27,7 +33,7 @@ class RegisterController extends Controller
             'password' => $this->passwordRules(),
         ])->validate();
 
-        $result = User::create([
+        $result = $this->users->create([
             'name' => $input['name'],
             'username' => $input['username'],
             'email' => $input['email'],
