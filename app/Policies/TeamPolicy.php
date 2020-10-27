@@ -53,7 +53,7 @@ class TeamPolicy
      */
     public function update(User $user, Team $team)
     {
-        return $user->ownsTeam($team);
+        return $user->isOwnerOfTeam($team);
     }
 
     /**
@@ -101,6 +101,6 @@ class TeamPolicy
      */
     public function delete(User $user, Team $team)
     {
-        return $user->ownsTeam($team);
+        return $user->isOwnerOfTeam($team);
     }
 }
