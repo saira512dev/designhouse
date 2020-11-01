@@ -106,4 +106,34 @@ class DesignController extends Controller
         return response()->json(["liked" => $isLiked],200);
     }
     
+    public function search(Request $request)
+    {
+        $designs =  $this->designs->search($request);
+        return  DesignResource::collection($designs);  
+    }
+
+    public function findBySlug($slug)
+    {
+        $design =  $this->designs->withCriteria([new IsLive()])->findWhereFirst('slug', $slug);
+        return new DesignResource($design);
+
+    }
+
+    public function getForTeam($teamId)
+    {
+        $designs = $this->designs
+                        ->withCriteria([new IsLive()])
+                        ->findWhere('team_id', $teamId);
+        
+        return DesignResource::collection($designs);
+    }
+
+    public function getForUser($userId)
+    {
+        $designs = $this->designs
+                        ->withCriteria([new IsLive()])
+                        ->findWhere('user_id', $userId);
+        
+        return DesignResource::collection($designs);
+    }
 }
