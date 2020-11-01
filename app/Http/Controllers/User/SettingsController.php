@@ -36,7 +36,7 @@ class SettingsController extends Controller
 
         $location =  new Point($request->location['latitude'], $request->location['longitude']);
             
-        $user = $this->users->update(auth()->id,[
+        $user = $this->users->update(auth()->id(),[
             'tagline' => $request->tagline,
             'name' => $request->name,
             'about' => $request->about,
