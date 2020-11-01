@@ -9,14 +9,22 @@ Route::get('me', 'User\MeController@getMe');
 //Get designs
 Route::get('designs','Designs\DesignController@index');
 Route::get('designs/{id}','Designs\DesignController@findDesign');
+Route::get('designs/slug/{slug}','Designs\DesignController@findBySlug');
 
 
 //get users
 Route::get('users', 'User\UserController@index');
+Route::get('users/{id}/designs', 'Designs\DesignController@getForUser');
+Route::get('users/{username}', 'User\UserController@findByUsername');
+
 
 //get teams
 Route::get('teams/slug/{slug}', 'Teams\TeamsController@findBySlug');
+Route::get('teams/{id}/designs', 'Designs\DesignController@getForTeam');
 
+//search designs
+Route::get('search/designs','Designs\DesignController@search');
+Route::get('search/designers','User\UserController@search');
 
 
 //Routes for authenticated users only
