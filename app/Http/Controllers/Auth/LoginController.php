@@ -55,8 +55,12 @@ class LoginController extends Controller
         {
             return response()->json(["errors" => [
                 "verification" => "you need to verify your email account"
-            ]]);
+            ]], 422);
         }
+
+        throw ValidationException::withMessages([
+            $this->username() => "Invalid credentials"
+        ]);
 
 
             //set user's token
