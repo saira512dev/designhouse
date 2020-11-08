@@ -58,9 +58,7 @@ class LoginController extends Controller
             ]], 422);
         }
 
-        throw ValidationException::withMessages([
-            $this->username() => "Invalid credentials"
-        ]);
+        
 
 
             //set user's token
