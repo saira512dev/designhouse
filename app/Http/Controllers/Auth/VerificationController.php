@@ -42,7 +42,7 @@ class VerificationController extends Controller
 
         $user->markEmailAsVerified();
         //event(new Registered($user));
-        return response()->json(["message" => "email successfully verified"],402);
+        return response()->json(["message" => "email successfully verified"],200);
 
 
     }
