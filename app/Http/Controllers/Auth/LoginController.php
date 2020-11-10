@@ -44,8 +44,8 @@ class LoginController extends Controller
         if(empty($token))
         {
             return response()->json(["errors" => [
-                "failed" => "invalid credentials"
-            ]]);
+                "failed" => "Invalid credentials"
+            ]],401);
         }
        
         //get authenticated user
