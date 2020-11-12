@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth:api']],function(){
     //Upload Designs
     Route::post('designs','Designs\UploadController@upload');
     Route::put('designs/{id}','Designs\DesignController@update');
+    Route::get('designs/{id}/byUser','Designs\DesignController@userOwnsDesign');
     Route::delete('designs/{id}','Designs\DesignController@destroy');
 
     //likes and unlikes
@@ -52,7 +53,7 @@ Route::group(['middleware' => ['auth:api']],function(){
     Route::post('teams', 'Teams\TeamsController@store');
     Route::get('teams/{id}', 'Teams\TeamsController@findById');
     Route::get('teams', 'Teams\TeamsController@index');
-    Route::get('users/teams', 'Teams\TeamsController@fetchUserTeams');
+    Route::get('members/teams', 'Teams\TeamsController@fetchUserTeams');
     Route::put('teams/{id}', 'Teams\TeamsController@update');
     Route::delete('teams/{id}', 'Teams\TeamsController@destroy');
     Route::delete('teams/{team_id}/users/{user_id}', 'Teams\TeamsController@removeFromTeam');

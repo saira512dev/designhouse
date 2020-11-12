@@ -136,4 +136,13 @@ class DesignController extends Controller
         
         return DesignResource::collection($designs);
     }
+
+    public function userOwnsDesign($id)
+    {
+        $design = $this->designs
+                        ->withCriteria([new ForUser(auth()->user()->id)])
+                        ->findWhereFirst('id', $id);
+        
+        return new DesignResource($design);
+    }
 }
