@@ -8,6 +8,8 @@ use App\Repositories\Interfaces\{ITeam,IUser,IInvitation};
 use Illuminate\Support\Str;
 use App\Http\Resources\TeamResource;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
+
 
 class TeamsController extends Controller
 {
@@ -28,7 +30,9 @@ class TeamsController extends Controller
     //get list of all items
     public function index()
     {
-
+        $teams = $this->teams->all();
+        return TeamResource::collection($teams);
+    
     }
 
     //save team to database
@@ -76,7 +80,7 @@ class TeamsController extends Controller
     //fetch teams of a particular users
     public function fetchUserTeams()
     {
-        $teams = $this->teams->fetchUserTeams();
+        $teams = auth()->user()->teams;
         return TeamResource::collection($teams);
     }
 
