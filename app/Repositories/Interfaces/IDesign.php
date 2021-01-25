@@ -11,4 +11,5 @@ Interface IDesign
     public function like($id);
     public function isLikedByUser($id);
     public function search(Request $request);
+    public function getByTag($tag);
 }

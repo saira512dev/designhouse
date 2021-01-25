@@ -48,7 +48,8 @@ class DesignRepository extends BaseRepository implements IDesign
 
     public function search(Request $request)
     {
-        $query = (new $this->model)->newQuery();
+        $query = ($this->model)->newQuery();
+
         $query->where('is_live',true);
         
         //return only designs having comments
@@ -82,7 +83,11 @@ class DesignRepository extends BaseRepository implements IDesign
         return $query->get();
     }
 
+    public function getByTag($tag)
+    {
 
-
+         $designs = $this->model->withAllTags($tag)->get();
+         return $designs;
+    }
 
 }
