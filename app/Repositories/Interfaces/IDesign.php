@@ -12,4 +12,5 @@ Interface IDesign
     public function isLikedByUser($id);
     public function search(Request $request);
     public function getByTag($tag);
+    public function getMostLiked();
 }

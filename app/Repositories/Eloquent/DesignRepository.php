@@ -90,4 +90,12 @@ class DesignRepository extends BaseRepository implements IDesign
          return $designs;
     }
 
+    public function getMostLiked()
+    {
+
+         $designs = $this->model->withCount('likes')->orderByDesc('likes_count')->limit(4)->get();
+         return $designs;
+    }
+
+
 }

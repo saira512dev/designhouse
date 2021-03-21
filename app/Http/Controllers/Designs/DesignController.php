@@ -157,4 +157,15 @@ class DesignController extends Controller
         
         return DesignResource::collection($designs);
     }
+
+    
+    public function getMostLikedDesigns()
+    {
+        $designs = $this->designs
+                        ->withCriteria([new IsLive(),new EagerLoad(['user','comments'])])
+                        ->getMostLiked();
+                        
+        
+        return DesignResource::collection($designs);
+    }
 }

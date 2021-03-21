@@ -8,6 +8,7 @@ Route::get('me', 'User\MeController@getMe');
 
 //Get designs
 Route::get('designs','Designs\DesignController@index');
+Route::get('mostLikedDesigns','Designs\DesignController@getMostLikedDesigns');
 Route::get('designs/{id}','Designs\DesignController@findDesign');
 Route::get('designs/slug/{slug}','Designs\DesignController@findBySlug');
 Route::get('designs/tag/{tag}','Designs\DesignController@searchByTag');
